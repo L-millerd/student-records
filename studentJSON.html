@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+<style>
+    .mainContainer{
+        padding: 50px;
+    }
+
+    h5{
+        font-weight: bold;
+    }
+
+    .form{
+        width: 500px;
+        padding: 20px;
+        background-color: #f1f1f1;
+    }
+
+    .form-label{
+        font-weight: bold;
+    }
+
+    .picture{
+        max-width: 200px;
+        max-height: 200px;
+    }
+
+    .studentContainer{
+        
+    }
+    .studentName{
+        font-weight: bold;
+    }
+
+    .hide{
+        display: none;
+    }
+</style>
+</head>
+
+<body>
+<div class="mainContainer">
+    <table id="studentContainer${i}" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Student No.</th>
+                <th scope="col">Name</th>
+                <th scope="col">Picture</th>
+                <th scope="col">Address</th>
+                <th scope="col">Email</th>
+                <th scope="col">CNDN Citizen</th>
+                <th scope="col">Admitted</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody id="students">
+
+
+        </tbody>
+    </table>
+
+
+
+   
+
+
+
+    <div class="form">
+        <!-- <form> why does form break it-->
+        <h5>Add New Student</h5>
+
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Student Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Student Name">
+        </div>
+
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Profile Picture</label>
+            <input class="form-control" type="file" id="picture">
+          </div>
+
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" placeholder="Your Address">
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" placeholder="name@example.com">
+        </div>
+
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="citizenCheck">
+            <label class="form-check-label" for="citizenCheck">
+              Canadian Citizen
+            </label>
+          </div>
+
+        <button id="addButton" class="btn btn-primary mt-3 mb-3">Add Record</button>
+    </div>
+
+
+</div> <!--mainContainer-->
+</body>
+<script>
+
+$(document).ready(function(){
+
+    
+        // $.each(students, function(index, val){
+        //     $("#students").append(`
+        //     <div class = "studentName">Name: ${val.name}</div>
+        //     <img src = "${val.picture}">
+        //     <div class = "info">
+        //         Address: ${val.address}<br>
+        //         Email: ${val.email}<br>
+        //         Canadian Citizen: ${val.c_citizen}<br>
+        //     </div>
+        //     `);
+        // });
+
+        //load page
+
+
+        window.onload = function() {
+            contentLoad();
+        };
+
+        function contentLoad(){
+            for(let i=0; i<students.length; i++){
+                $("#students").append(`
+                            <tr id= "studentContainer${i}">
+                                <th scope="row">${i}</th>
+                                <td>${students[i].name}</td>
+                                <td><img class="picture" src = "${students[i].picture}"></td>
+                                <td>${students[i].address}</td>
+                                <td>${students[i].email}</td>
+                                <td>${students[i].c_citizen}</td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="admittedCheck${i}" onclick="updateAdmitted(${i})">
+                                        <label class="form-check-label" for="admittedCheck">Admitted</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary mt-3 mb-3" id="deleteButton" onclick="deleteRecord(${i})">Delete</button>
+                                </td>
+                            </tr>
+                `
+                );
+            }
+        }
+
+        ///form
+        $("#addButton").click(function(){
+            addNewStudent($("#name").val(), $("#picture").val(), $("#address").val(), $("#email").val(), $('#citizenCheck').is(":checked") );
+             $("#students").html("");
+             contentLoad();
+            
+
+        })
+   
+         
+});///end jquery///////
+
+
+ 
+    var students = [
+        {
+        "name": "John Smith", 
+        "picture": "../images/john.jpg", 
+        "address": "123 The Lane", 
+        "email": "john@gmail.com", 
+        "c_citizen": false,
+        "admitted": false
+        },
+        {
+        name: 'Kyle McKyle', 
+        picture: "../images/kyle.jpg", 
+        address: "456 Other Street", 
+        email: "kyle@gmail.com", 
+        c_citizen: true,
+        admitted: false
+        },
+        {
+        name: 'Chad Man', 
+        picture: "../images/chad.jpg", 
+        address: "234 Bad Avenue", 
+        email: "chad@gmail.com", 
+        c_citizen: true,
+        admitted: false
+        },
+        {
+        name: 'Emily Dick', 
+        picture: "../images/emily.jpg", 
+        address: "789 Main Street", 
+        email: "Emily@gmail.com", 
+        c_citizen: false,
+        admitted: false
+        },
+        {
+        name: 'Erin McKyle', 
+        picture: "../images/erin.jpg", 
+        address: "765 Marine Drive", 
+        email: "erin@gmail.com", 
+        c_citizen: true,
+        admitted: false }
+        
+    ];
+
+        function addNewStudent(inputname, inputimage, inputaddress, inputemail, inputc_citizen){
+            let newStudent ={
+                name: inputname,
+                picture: inputimage,
+                address: inputaddress,
+                email: inputemail,
+                c_citizen: inputc_citizen,
+                admitted: false
+            }
+
+            students.push(newStudent)
+        }
+
+        function updateAdmitted(index){
+            if ($('#admittedCheck'+index).is(":checked")){
+                students[index].admitted = true
+            }
+            else{
+                students[index].admitted = false
+            }
+            
+        }
+
+        function deleteRecord(index){
+            students.splice(index, 1);
+            $("#studentContainer"+index).addClass("hide");
+        
+        }
+
+   
+
+        // function addNewStudent1(object){
+        //     students.push(object);
+        // }
+</script>
+</html>
